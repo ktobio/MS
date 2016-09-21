@@ -5,6 +5,8 @@ set more off
 
 log using "microsoft_$S_DATE.log", replace
 
+*tmp change for github practice*
+
 /*
 *CLEANING THE DATA AND PREPARING FOR ANALYSIS*
 
