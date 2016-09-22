@@ -288,7 +288,6 @@ outreg2 using "regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality meetingbreakdownatte* region1-region6 function1-function7 level1-level7, cluster(pid)
 outreg2 using "regression_quality_$S_DATE", excel label append
 
-
 regress meetinghours mailhours, cluster(pid)
 outreg2 using "regression_$S_DATE", excel label replace
 
