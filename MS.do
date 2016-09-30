@@ -7,7 +7,7 @@ log using "microsoft_$S_DATE.log", replace
 
 /*********************************************************************
 
-9/29/16
+9/29/16 Meeting
 
 To do:
 1. Seperate the "cleaning" portion into its own file
