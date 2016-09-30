@@ -5,6 +5,17 @@ set more off
 
 log using "microsoft_$S_DATE.log", replace
 
+/*********************************************************************
+
+9/29/16
+
+To do:
+1. Seperate the "cleaning" portion into its own file
+2. Divide up program into small chunks (check Shapiro)
+3. Write a shell script to run all the do files in order
+
+*********************************************************************/
+
 /*
 *CLEANING THE DATA AND PREPARING FOR ANALYSIS*
 
