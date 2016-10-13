@@ -5,7 +5,7 @@ set more off
 
 *test 10/11/16*
 
-use "KPI"
+use "data/KPI"
 
 *TABS*
 

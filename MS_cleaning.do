@@ -6,7 +6,7 @@ set more off
 *CLEANING THE DATA AND PREPARING FOR ANALYSIS*
 
 *insheeting .csv. Renamed "Demo KPI Dump - All Dates_v2.csv" to "KPI.csv", no other changes to file were made*
-insheet using "KPI.csv", names case
+insheet using "./data/Demo KPI Dump - All Dates_v2.csv", names case
 
 *dropping rows without variables*
 drop if dt==""
@@ -179,5 +179,5 @@ foreach var in level function region organization {
 quietly tab `var', gen(`var')
 }
 
-save "KPI", replace
+save "data/KPI", replace
 
