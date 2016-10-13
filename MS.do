@@ -7,6 +7,8 @@ set more off
 
 use "data/KPI"
 
+global figures "reports"
+
 *TABS*
 
 tab leveld, missing
@@ -78,70 +80,70 @@ corr meetinghours mailhours
 label var attendedmeetingquality "Attended Mtg Quality - 1 to 100 Scale"
 
 regress attendedmeetingquality function1-function6, cluster(pid)
-outreg2 using "regression_basic_$S_DATE", excel label replace
+outreg2 using "$figures/regression_basic_$S_DATE", excel label replace
 regress attendedmeetingquality level1-level6, cluster(pid)
-outreg2 using "regression_basic_$S_DATE", excel label append
+outreg2 using "$figures/regression_basic_$S_DATE", excel label append
 
 foreach var in totalhours meetinghours mailhours overload overloadmeeting overloadmails doublebooked lowengage {
 regress `var' function1-function6, cluster(pid)
-outreg2 using "regression_basic_$S_DATE", excel label append
+outreg2 using "$figures/regression_basic_$S_DATE", excel label append
 regress `var'  level1-level6, cluster(pid)
-outreg2 using "regression_basic_$S_DATE", excel label append
+outreg2 using "$figures/regression_basic_$S_DATE", excel label append
 }
 
 regress attendedmeetingquality meetinghours region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label replace
+outreg2 using "$figures/regression_quality_$S_DATE", excel label replace
 regress attendedmeetingquality mailhours region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality totalhours region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality overloadmeeting region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality overloadmail region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality doublebooked region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality lowenga region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality meetingbreakdownduration* region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 regress attendedmeetingquality meetingbreakdownatte* region1-region6 function1-function7 level1-level7, cluster(pid)
-outreg2 using "regression_quality_$S_DATE", excel label append
+outreg2 using "$figures/regression_quality_$S_DATE", excel label append
 
 regress meetinghours mailhours, cluster(pid)
-outreg2 using "regression_$S_DATE", excel label replace
+outreg2 using "$figures/regression_$S_DATE", excel label replace
 
 levelsof leveld, local(levels) 
 foreach l of local levels {
 regress meetinghours mailhours if leveld=="`l'", cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
 *regress meetinghours mailhours region2-region6 if leveld=="`l'", cluster(pid)
-*outreg2 using "regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
+*outreg2 using "$figures/regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
 }
 
 levelsof functiont, local(levels) 
 foreach l of local levels {
 regress meetinghours mailhours if functiont=="`l'", cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
 *regress meetinghours mailhours region2-region6 if functiont=="`l'", cluster(pid)
-*outreg2 using "regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
+*outreg2 using "$figures/regression_hours_$S_DATE", excel label append ctitle(Hours in meetings, "`l'" only)
 }
 
 regress meetinghours mailhours level2-level7, cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append
 regress meetinghours mailhours level2-level7 region2-region6, cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append
 regress meetinghours mailhours function2-function7, cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append
 regress meetinghours mailhours function2-function7 region2-region6, cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append
 regress meetinghours mailhours level2-level7 function2-function7 region2-region6, cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append
 
 regress central meetinghours mailhours, cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append
 regress central meetinghours mailhours level2-level7 function2-function7 region2-region6, cluster(pid)
-outreg2 using "regression_hours_$S_DATE", excel label append
+outreg2 using "$figures/regression_hours_$S_DATE", excel label append
 
 *FIGURES*
 
@@ -174,7 +176,7 @@ foreach var in centrality  {
 graph bar (mean) `var', over(leveld, label(angle(45))) subtitle("`: variable label `var'', by level", span)
 graph save `var', replace
 graph export `var'.png, replace
-png2rtf using "microsoft_$S_DATE.doc", g(`var'.png) replace    
+png2rtf using "$figures/microsoft_$S_DATE.doc", g(`var'.png) replace    
 erase `var'.png
 erase `var'.gph  
 }
@@ -183,7 +185,7 @@ foreach var in meetinghours meetingsattended attendedmeetingquality  mailhours s
 graph bar (mean) `var', over(leveld, label(angle(45))) subtitle("`: variable label `var'', by level", span)
 graph save `var', replace
 graph export `var'.png, replace
-png2rtf using "microsoft_$S_DATE.doc", g(`var'.png) append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g(`var'.png) append        
 erase `var'.png
 erase `var'.gph  
 }
@@ -192,7 +194,7 @@ foreach var in centrality  meetinghours meetingsattended attendedmeetingquality 
 graph bar (mean) `var', over(functiont, label(angle(45))) subtitle("`: variable label `var'', by level", span)
 graph save `var', replace
 graph export `var'.png, replace
-png2rtf using "microsoft_$S_DATE.doc", g(`var'.png) append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g(`var'.png) append        
 erase `var'.png
 erase `var'.gph  
 }
@@ -228,7 +230,7 @@ foreach l of local levels {
 graph bar meetingbreakdownduration_lesstha  meetingbreakdownduration_from15 meetingbreakdownduration_from30t meetingbreakdownduration_from1to meetingbreakdownduration_from2to meetingbreakdownduration_atleast if leveld=="`l'", subtitle("Share of Total Meeting Hours by Duration, for `l'") ytitle("Share of Total Meeting Hours") legend(lab(1 "<15min") lab(2 "15-30min") lab(3 "30min - 1hr") lab(4 "1-2 hr") lab(5 "2-8 hr") lab(6 "8hr+") symxsize(5) row(1)) 
 graph save "`l'", replace
 graph export "`l'.png", replace
-png2rtf using "microsoft_$S_DATE.doc", g("`l'.png") append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g("`l'.png") append        
 erase "`l'.png"
 erase "`l'.gph"  
 }
@@ -238,7 +240,7 @@ foreach l of local levels {
 graph bar meetingbreakdownduration_lesstha  meetingbreakdownduration_from15 meetingbreakdownduration_from30t meetingbreakdownduration_from1to meetingbreakdownduration_from2to meetingbreakdownduration_atleast if functiont=="`l'", subtitle("Share of Total Meeting Hours by Duration, for `l'") ytitle("Share of Total Meeting Hours") legend(lab(1 "<15min") lab(2 "15-30min") lab(3 "30min - 1hr") lab(4 "1-2 hr") lab(5 "2-8 hr") lab(6 "8hr+") symxsize(5) row(1)) 
 graph save "`l'", replace
 graph export "`l'.png", replace
-png2rtf using "microsoft_$S_DATE.doc", g("`l'.png") append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g("`l'.png") append        
 erase "`l'.png"
 erase "`l'.gph"  
 }
@@ -260,7 +262,7 @@ subtitle("Share of Total Meeting Hours by Meeting Size, for `l'") ytitle("Share 
 #delimit cr
 graph save "`l'", replace
 graph export "`l'.png", replace
-png2rtf using "microsoft_$S_DATE.doc", g("`l'.png") append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g("`l'.png") append        
 erase "`l'.png"
 erase "`l'.gph"  
 }
@@ -273,7 +275,7 @@ subtitle("Share of Total Meeting Hours by Meeting Size, for `l'") ytitle("Share 
 #delimit cr
 graph save "`l'", replace
 graph export "`l'.png", replace
-png2rtf using "microsoft_$S_DATE.doc", g("`l'.png") append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g("`l'.png") append        
 erase "`l'.png"
 erase "`l'.gph"  
 }
@@ -305,7 +307,7 @@ foreach var in share_recurring share_externalmtg share_externalall {
 graph bar (mean) `var', over(functiont, label(angle(45))) subtitle("`: variable label `var'', by level", span)
 graph save `var', replace
 graph export `var'.png, replace
-png2rtf using "microsoft_$S_DATE.doc", g(`var'.png) append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g(`var'.png) append        
 erase `var'.png
 erase `var'.gph  
 }
@@ -314,7 +316,7 @@ foreach var in share_recurring share_externalmtg share_externalall {
 graph bar (mean) `var', over(leveld, label(angle(45))) subtitle("`: variable label `var'', by level", span)
 graph save `var', replace
 graph export `var'.png, replace
-png2rtf using "microsoft_$S_DATE.doc", g(`var'.png) append        
+png2rtf using "$figures/microsoft_$S_DATE.doc", g(`var'.png) append        
 erase `var'.png
 erase `var'.gph  
 }
