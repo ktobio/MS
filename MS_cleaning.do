@@ -3,9 +3,12 @@ clear matrix
 capture log close
 set more off
 
+log using "logs/MS_cleaning.log", replace
+
 *CLEANING THE DATA AND PREPARING FOR ANALYSIS*
 
 *insheeting .csv. Renamed "Demo KPI Dump - All Dates_v2.csv" to "KPI.csv", no other changes to file were made*
+
 insheet using "./data/Demo KPI Dump - All Dates_v2.csv", names case
 
 *dropping rows without variables*
