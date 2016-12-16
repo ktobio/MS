@@ -69,13 +69,32 @@ replace a_number=1 if attain=="Low"
 replace a_number=2 if attain=="Medium"
 replace a_number=3 if attain=="High"
 
+quietly tab organization, gen(orgdum)
+
+bysort attainment: sum centrality
+sum centrality
+bysort attainment: sum totalhours
+sum totalhours
+bysort attainment: sum  externalcollaborationhours
+sum  externalcollaborationhours
+
+
+/*
+/*
 areg a_number level1-level6 time_trend, absorb(organization) cluster(pid)
 outreg2 using "$figures/attainment_areg_$S_DATE", excel label replace 
 foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeting_hours_high_quality redundanthours lowengagementhours overloadmeeting totalhours overload utilization centrality receivedmails sentmails externalnetworksize internalnetworksize externalnetworkbreadth internalnetworkbreadth externalcollaborationhours internalcollaborationhours {
 areg a_number `var'  level1-level6 time_trend, absorb(organization)  cluster(pid)
 outreg2 using "$figures/attainment_areg_$S_DATE", excel label append
 }
+*/
 
+reg a_number level1-level6 time_trend orgdum*,  cluster(pid)
+outreg2 using "$figures/attainment_areg_$S_DATE", excel label replace 
+foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeting_hours_high_quality redundanthours lowengagementhours overloadmeeting totalhours overload utilization centrality receivedmails sentmails externalnetworksize internalnetworksize externalnetworkbreadth internalnetworkbreadth externalcollaborationhours internalcollaborationhours {
+reg a_number `var'  level1-level6 time_trend orgdum*,   cluster(pid)
+outreg2 using "$figures/attainment_areg_$S_DATE", excel label append
+}
 
 regress a_number level1-level6 region1-region5 time_trend,   cluster(pid)
 outreg2 using "$figures/attainment_$S_DATE", excel label replace
@@ -84,7 +103,6 @@ regress a_number `var'  level1-level6 region1-region5 time_trend,   cluster(pid)
 outreg2 using "$figures/attainment_$S_DATE", excel label append
 }
 
-quietly tab organization, gen(orgdum)
 
 logit highdum level1-level6 time_trend orgdum*,   cluster(pid)
 outreg2 using "$figures/attainment_logit_$S_DATE", excel label replace
@@ -99,7 +117,55 @@ foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeti
 probit highdum `var'  level1-level6 time_trend orgdum*,   cluster(pid)
 outreg2 using "$figures/attainment_probit_$S_DATE", excel label append
 }
+*/
+collapse (sum) meeting_hours_high_quality	meetingbreakdownrecurring_nonrec	meetingsattended	externalnetworkbreadth	meetinghoursbylevel_above	meetingbreakdownduration_from30t	meetingbreakdownduration_from2to	receivedmails	meetinghoursbylevel_below	meeting_hours_duration_one_hour_	doublebookedhours	meetingbreakdownattendees_from3t	meetingbreakdownrecurring_recurr	internalnetworksize	organizedmeetinghours	sentmailsbyisexternal_true	meetinghoursbyisexternal_false	meetingbreakdownattendees_only2	sentmailsbyisexternal_false	meetingbreakdownattendees_only1	totalhours	externalnetworksize	mailhours	meetingbreakdownattendees_atleas	meetinghours	redundanthours	internalnetworkbreadth	meetingbreakdownduration_lesstha	meetinghoursbyisexternal_true		meetingbreakdownattendees_from7t	overloadmeetings	meetingbreakdownduration_from1to	lowengagementhours	meetinghoursbylevel_same	timespentwithlevel_below	meetingbreakdownduration_atleast	meetingbreakdownduration_from15t	meetingbreakdownattendees_from11	overloadmailscount	sentmails	internalcollaborationhours	timeblock_1hr	externalcollaborationhours	overload	timeblock_2hrs	utilization ///
+	(mean) a_number organizedmeetingq attendedmeetingq centrality, by (pid *dum  *dum* level* region* )
 
+bysort a_number: sum centrality
+sum centrality
+bysort a_number: sum totalhours
+sum totalhours
+bysort a_number: sum  externalcollaborationhours
+sum  externalcollaborationhours
+
+	/*
+areg a_number level1-level6 time_trend, absorb(organization) 
+outreg2 using "$figures/attainment_areg_collapse_$S_DATE", excel label replace 
+foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeting_hours_high_quality redundanthours lowengagementhours overloadmeeting totalhours overload utilization centrality receivedmails sentmails externalnetworksize internalnetworksize externalnetworkbreadth internalnetworkbreadth externalcollaborationhours internalcollaborationhours {
+areg a_number `var'  level1-level6 time_trend, absorb(organization)  
+outreg2 using "$figures/attainment_areg_collapse_$S_DATE", excel label append
+}
+*/
+
+reg a_number level1-level6  orgdum*  
+outreg2 using "$figures/attainment_areg_collapse_$S_DATE", excel label replace 
+foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeting_hours_high_quality redundanthours lowengagementhours overloadmeeting totalhours overload utilization centrality receivedmails sentmails externalnetworksize internalnetworksize externalnetworkbreadth internalnetworkbreadth externalcollaborationhours internalcollaborationhours {
+reg a_number `var'  level1-level6  orgdum*
+outreg2 using "$figures/attainment_areg_collapse_$S_DATE", excel label append
+}
+
+regress a_number level1-level6 region1-region5
+outreg2 using "$figures/attainment_collapse_$S_DATE", excel label replace
+foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeting_hours_high_quality redundanthours lowengagementhours overloadmeeting totalhours overload utilization centrality receivedmails sentmails externalnetworksize internalnetworksize externalnetworkbreadth internalnetworkbreadth externalcollaborationhours internalcollaborationhours {
+regress a_number `var'  level1-level6 region1-region5    
+outreg2 using "$figures/attainment_collapse_$S_DATE", excel label append
+}
+
+logit highdum level1-level6  orgdum*
+outreg2 using "$figures/attainment_logit_collapse_$S_DATE", excel label replace
+foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeting_hours_high_quality redundanthours lowengagementhours overloadmeeting totalhours overload utilization centrality receivedmails sentmails externalnetworksize internalnetworksize externalnetworkbreadth internalnetworkbreadth externalcollaborationhours internalcollaborationhours {
+logit highdum `var'  level1-level6  orgdum*,   
+outreg2 using "$figures/attainment_logit_collapse_$S_DATE", excel label append
+}
+
+probit highdum level1-level6  orgdum*
+outreg2 using "$figures/attainment_probit_collapse_$S_DATE", excel label replace
+foreach var in meetinghours attendedmeetingquality organizedmeetingquality meeting_hours_high_quality redundanthours lowengagementhours overloadmeeting totalhours overload utilization centrality receivedmails sentmails externalnetworksize internalnetworksize externalnetworkbreadth internalnetworkbreadth externalcollaborationhours internalcollaborationhours {
+probit highdum `var'  level1-level6  orgdum*,   
+outreg2 using "$figures/attainment_probit_collapse_$S_DATE", excel label append
+}	
+	
+stop
 
 stop
 
